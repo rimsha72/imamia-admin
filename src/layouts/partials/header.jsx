@@ -60,7 +60,7 @@ export default function Header({ header }) {
       <div className="bg-white">
         <nav className="text-black">
           <div className="max-w-screen-2xl flex lg:gap-0 gap-6 flex-wrap items-center justify-between px-4 py-3 sm:px-8 sm:py-4">
-            
+
             <div className="relative xl:w-3/4">
               {/* Header content */}
             </div>
@@ -99,19 +99,15 @@ export default function Header({ header }) {
 
               {/* Dropdown */}
               <div
-                className={`z-10 ${
-                  drop ? "" : "hidden"
-                } absolute w-full px-4 my-12 text-base list-none bg-gray-200 divide-y divide-gray-100 rounded-lg shadow`}
+                className={`absolute right-0 top-full mt-3 z-50 ${drop ? "block" : "hidden"
+                  } w-40 sm:w-48 rounded-lg bg-white shadow-lg border border-gray-100`}
               >
-                <ul
-                  className="py-2"
-                  aria-labelledby="user-menu-button"
-                >
+                <ul className="py-2">
                   <li>
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors"
                     >
                       Log Out
                     </button>
