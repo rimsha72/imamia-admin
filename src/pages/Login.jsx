@@ -4,17 +4,17 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase.js";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function Login({ setAuthenticated }) {
+export default function Login() {
   const navigate = useNavigate();
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const email = emailRef.current.value.trim();
-    const password = passwordRef.current.value;
+    const email = emailRef.current?.value.trim();
+    const password = passwordRef.current?.value;
 
     if (!email || !password) {
       toast.error("Please enter your email and password.");
@@ -22,19 +22,7 @@ export default function Login({ setAuthenticated }) {
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      const user = userCredential.user;
-
-      console.log("Logged in user:", user);
-      console.log("User UID:", user.uid);
-      console.log("User Email:", user.email);
-
-      setAuthenticated(true);
+      await signInWithEmailAndPassword(auth, email, password);
 
       toast.success("Login successfully");
 
@@ -44,15 +32,9 @@ export default function Login({ setAuthenticated }) {
 
       switch (error.code) {
         case "auth/invalid-credential":
-          toast.error("Wrong email or password.");
-          break;
-
-        case "auth/user-not-found":
-          toast.error("No account found with this email.");
-          break;
-
         case "auth/wrong-password":
-          toast.error("Wrong password.");
+        case "auth/user-not-found":
+          toast.error("Wrong email or password.");
           break;
 
         case "auth/invalid-email":
@@ -81,26 +63,27 @@ export default function Login({ setAuthenticated }) {
 
       <div className="relative flex flex-wrap lg:items-center">
         {/* Background Image */}
-        <div className="w-full lg:w-1/2 lg:block hidden">
+        <div className="hidden w-full lg:block lg:w-1/2">
           <img
-            alt=""
             src="https://res.cloudinary.com/dac5ioh9a/image/upload/v1786100809/055_-_2024_vis0uu.jpg"
-            className="h-screen p-6"
+            alt="Imamia Kultur Zentrum"
+            className="h-screen w-full object-cover p-6"
           />
         </div>
 
         {/* Login Form */}
         <div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
-          <div className="bg-white backdrop-blur-md rounded-lg max-w-screen-sm mx-auto py-8 px-4">
-            <div className="mx-auto max-w-lg flex justify-center flex-col">
+          <div className="mx-auto max-w-screen-sm rounded-lg bg-white px-4 py-8 backdrop-blur-md">
+            
+            <div className="mx-auto flex max-w-lg flex-col justify-center">
               <h1 className="text-2xl font-paytone">
-                Imamia Kultur Zentrum Admin{" "}
+                Imamia Kultur Zentrum{" "}
                 <span className="text-red-110">
-                  Login
+                  Admin Login
                 </span>
               </h1>
 
-              <p className="text-red-120 mt-4 font-medium">
+              <p className="mt-4 font-medium text-red-120">
                 Please Enter your login Details
               </p>
             </div>
@@ -115,28 +98,27 @@ export default function Login({ setAuthenticated }) {
                   type="email"
                   ref={emailRef}
                   autoComplete="email"
-                  className="w-full rounded-lg border border-red-220 mt-2 p-4 pe-12 text-sm shadow-sm outline-none"
                   placeholder="Email"
+                  className="mt-2 w-full rounded-lg border border-red-220 p-4 pe-12 text-sm shadow-sm outline-none"
                 />
               </div>
 
               {/* Password */}
               <div>
                 <input
-                  ref={passwordRef}
                   type="password"
+                  ref={passwordRef}
                   autoComplete="current-password"
-                  className="w-full rounded-lg border border-red-220 p-4 pe-12 mt-2 text-sm shadow-sm outline-none"
                   placeholder="Password"
+                  className="mt-2 w-full rounded-lg border border-red-220 p-4 pe-12 text-sm shadow-sm outline-none"
                 />
               </div>
 
-            
               {/* Login Button */}
               <div className="flex items-center justify-end pt-4">
                 <button
                   type="submit"
-                  className="inline-block rounded-lg bg-red-110 w-full px-6 py-4 font-medium text-white"
+                  className="inline-block w-full rounded-lg bg-red-110 px-6 py-4 font-medium text-white"
                 >
                   Login
                 </button>
